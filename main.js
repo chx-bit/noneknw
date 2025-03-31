@@ -162,9 +162,19 @@ const quizData = [
   }
 ];
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 let currentQuestionIndex = 0;
 let score = 0;
+let processedQuizData = [];
 
+// Element references tetap sama
 const landingEl = document.getElementById("landing");
 const startBtn = document.getElementById("startButton");
 const quizContainer = document.getElementById("quizContainer");
@@ -175,40 +185,72 @@ const scoreContainer = document.getElementById("scoreContainer");
 const scoreText = document.getElementById("scoreText");
 const downloadBtn = document.getElementById("downloadButton");
 
-// Mulai kuis: Sembunyikan landing dan tampilkan kuis
+// Event Listener untuk Start Button
 startBtn.addEventListener("click", () => {
   landingEl.style.display = "none";
+  
+  // Proses pengacakan soal
+  processedQuizData = quizData.map(question => {
+    const shuffledOptions = shuffleArray([...question.options]);
+    return {
+      question: question.question,
+      options: shuffledOptions,
+      answer: shuffledOptions.indexOf(question.options[question.answer])
+    };
+  });
+
   setTimeout(() => {
+    currentQuestionIndex = 0;
+    score = 0;
     quizContainer.style.display = "block";
     displayQuestion();
-  }, 1500); 
+  }, 1500);
 });
 
-// Fungsi untuk menampilkan soal
+// Fungsi tampilkan soal
 function displayQuestion() {
-  // Bersihkan konten soal dan opsi
   questionContainer.innerHTML = "";
   optionsContainer.innerHTML = "";
-  
-  // Jika sudah selesai, tampilkan skor akhir
-  if (currentQuestionIndex >= quizData.length) {
+
+  if (currentQuestionIndex >= processedQuizData.length) {
     showScore();
     return;
   }
-  
-  // Tampilkan soal saat ini
-  const currentData = quizData[currentQuestionIndex];
+
+  const currentData = processedQuizData[currentQuestionIndex];
   questionContainer.innerHTML = `<h2>${currentData.question}</h2>`;
-  
-  // Tampilkan opsi jawaban
-  currentData.options.forEach(option => {
+
+  currentData.options.forEach((option, index) => {
     const label = document.createElement("label");
-    label.innerHTML = `<input type="radio" name="q${currentQuestionIndex}" value="${option}"> ${option}`;
+    label.innerHTML = `
+      <input type="radio" name="q${currentQuestionIndex}" value="${index}">
+      ${option}
+    `;
     optionsContainer.appendChild(label);
   });
 }
 
-// Fungsi untuk menampilkan skor akhir
+// Event Listener untuk Next Button
+nextBtn.addEventListener("click", () => {
+  const selected = document.querySelector(
+    `input[name="q${currentQuestionIndex}"]:checked`
+  );
+  
+  if (!selected) {
+    alert("Pilih jawaban dulu!");
+    return;
+  }
+
+  const selectedAnswer = parseInt(selected.value);
+  if (selectedAnswer === processedQuizData[currentQuestionIndex].answer) {
+    score++;
+  }
+
+  currentQuestionIndex++;
+  displayQuestion();
+});
+
+// Fungsi tampilkan skor (tetap sama)
 function showScore() {
   questionContainer.textContent = "Quiz Selesai!";
   scoreText.textContent = `Skor Anda: ${score} dari ${quizData.length}`;
@@ -216,21 +258,7 @@ function showScore() {
   scoreContainer.style.display = "block";
 }
 
-// Event untuk tombol "Next"
-nextBtn.addEventListener("click", () => {
-  const selected = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
-  if (!selected) {
-    alert("Pilih jawaban dulu!");
-    return;
-  }
-  if (selected.value === quizData[currentQuestionIndex].answer) {
-    score++;
-  }
-  currentQuestionIndex++;
-  displayQuestion();
-});
-
-// Event untuk tombol "Unduh Hasil"
+// Fungsi download hasil (tetap sama)
 downloadBtn.addEventListener("click", () => {
   html2canvas(scoreContainer).then(canvas => {
     const dataURL = canvas.toDataURL("image/png");
