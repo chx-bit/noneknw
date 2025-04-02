@@ -1,0 +1,202 @@
+body {
+  font-family: Poppins, sans-serif;
+  background: #1e1e1e;
+  padding: 20px;
+  text-align: center;
+}
+
+#landing,
+#quizContainer {
+  max-width: 600px;
+  margin: 10px;
+  padding: 15px;
+  background: #33333373;
+  color: #f1f1f1;
+  border-radius: 15px;
+  border: 0.5px solid #f1f1f1;
+  backdrop-filter: blur(10px);
+}
+#anonymous {
+  padding: 1px;
+  background: #33333373;
+  color: #f1f1f1;
+  border-radius: 15px;
+  border: 0.5px solid #f1f1f1;
+  backdrop-filter: blur(10px);
+  margin: 0px 20px ;
+}
+#landing h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+#landing p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+#questionContainer h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#option, #scoreContainer{
+  display: flex;
+  margin: 10px auto;
+  flex-direction: column;
+  text-align: left;
+  font-size: 18px;
+  padding: 15px;
+  gap: 15px;
+}
+#option Label {
+  background-color: #f0f0f073;
+  padding: 5px;
+  border: 0.5px #181818;
+  border-radius: 20px;
+  color: #333333;
+}
+#option Label:hover {
+  background: #f0f0f0;
+}
+
+button {
+  padding: 8px 12px;
+  font: 430 14px Poppins;
+  margin: 8px;
+  background: #f1f1f1;
+  color: #333333;
+  border-radius: 20px;
+  min-width: 100px;
+  border: 0.5px solid #f1f1f1;
+}
+
+#scoreContainer {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  color: #f1f1f1;
+  background: #333333;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+#option div {
+  background-color: #f0f0f074;
+  padding: 10px;
+  border-radius: 30px;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+#option div:hover,
+button:hover {
+  background: #f0f0f0;
+  color: #14141473;
+  box-shadow: 0px 0px 8px #f1f1f173;
+}
+
+#option div.selected {
+  background: #000000 !important;
+  border-color: #333 !important;
+  transform: scale(1.06);
+}
+
+#option div.selected:hover {
+  color: #f0f0f0;
+}
+
+#progressBarContainer {
+  margin: 14px;
+  border: 0.5px solid #f1f1f1;
+  border-radius: 18px;
+  padding: 3px;
+  box-shadow: 0px 0px 5px #f0f0f073;
+}
+#progressBarFill {
+  font-size: 10px;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+#downloadButton {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* Tambahkan di style.css */
+.neon-wrapper {
+  position: relative;
+  max-width: 600px;
+  margin: 100px auto;
+}
+
+.neon-shadow {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  right: 9px;
+  bottom: -9px;
+  border-radius: 19px;
+
+  background: linear-gradient(
+    98deg,
+    rgba(14, 0, 255, 1) 0%,
+    rgba(124, 0, 255, 1) 13%,
+    rgba(184, 0, 255, 1) 26%,
+    rgba(230, 0, 233, 1) 43%,
+    rgba(113, 0, 204, 1) 57%,
+    rgba(69, 0, 179, 1) 75%,
+    rgba(14, 0, 255, 1) 100%
+  );
+
+  background-size: 400% 400%;
+  filter: blur(15px);
+  opacity: 0.4;
+  z-index: -1;
+  animation: neonGlow 4s linear infinite;
+}
+
+
+@keyframes neonGlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* Pastikan container utama punya z-index lebih tinggi */
+#landing,
+#quizContainer {
+  position: relative;
+  z-index: 2;
+}
+@keyframes slideUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Kelas yang akan diterapkan pada elemen yang ingin dianimasikan */
+.slide-up, .neon-wrapper{
+  animation: slideUp 0.7s ease-in-out;
+}
